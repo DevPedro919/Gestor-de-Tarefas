@@ -1,0 +1,42 @@
+:root {
+  --cor-principal: #f3eddf;
+  --cor-secundaria: #f3eddf;
+  --fonte-padrao: 'Arial', sans-serif;
+  --espacamento-padrao: 1rem;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+header.cabecalho {
+  background-color: var(--cor-principal);
+  padding: var(--espacamento-padrao);
+  text-align: center;
+}
+footer {
+  background-color: var(--cor-secundaria);
+  color: black;
+  padding: var(--espacamento-padrao);
+  text-align: center;
+}
+body {
+  font-family: var(--fonte-padrao);
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  width: 100%;
+  height: 100%;
+}
+.logo {
+    width: 50px; 
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+.login {
+    width: 50px; 
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
