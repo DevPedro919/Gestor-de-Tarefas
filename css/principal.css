@@ -1,8 +1,18 @@
+
 :root {
- --cor-principal: #e9dab7;
+ --cor-principal: #e0d8c3;
  --cor-secundaria: #f3eddf;
  --fonte-padrao: 'Arial', sans-serif;
  --espacamento-padrao: 1rem;
+ 
+}
+.bg-custom {
+ background-color: #e2d5b7 !important;
+}
+.btn-custom {
+ background-color: #08580c;
+ color: white;
+ transition: background-color 0.2s ease-in-out;
 }
 
 * {
@@ -30,7 +40,6 @@ header.cabecalho {
  background-color: var(--cor-secundaria);
  padding: var(--espacamento-padrao);
  text-align: center;
- position: relative;
 }
 
 .logo {
@@ -54,7 +63,6 @@ header.cabecalho {
  margin-bottom: 0;
 }
 
-/* Boxes */
 
 .box {
  background: white;
@@ -62,7 +70,6 @@ header.cabecalho {
  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
 }
 
-/* Títulos das caixas */
 
 .box-title {
  font-weight: 700;
@@ -70,7 +77,7 @@ header.cabecalho {
  margin-bottom: 1rem;
 }
 
-/* Lista de tarefas */
+
 
 .task-list {
  list-style: none;
@@ -78,7 +85,7 @@ header.cabecalho {
 margin: 0;
 }
 
-/* Item da tarefa */
+
 
 .list-group-item {
  display: flex;
@@ -98,7 +105,7 @@ margin: 0;
  cursor: grabbing;
 }
 
-/* Texto da tarefa */
+
 
 .task-text {
  flex-grow: 1;
@@ -111,14 +118,14 @@ margin: 0;
     margin-right: 1rem;
 }
 
-/* Container dos botões */
+
 
 .btn-group {
  display: flex;
  gap: 0.5rem;
 }
 
-/* Botões estilo Trello */
+
 
 .btn-complete,
 .btn-delete {
@@ -152,7 +159,6 @@ margin: 0;
  background-color: #c94334;
 }
 
-/* Botão adicionar nova tarefa */
 
 .btn-add-new {
  background-color: rgba(60, 131, 89, 0.05);

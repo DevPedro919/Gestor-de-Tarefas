@@ -22,71 +22,72 @@
 <div class="container my-4 flex-grow-1">
   <div class="row g-3 justify-content-center">
 
-    <!-- Box 1 -->
     <div class="col-12 col-md-4">
       <div class="card p-3 box">
         <h5 class="box-title">A Fazer</h5>
-
         <ul class="list-group list-group-flush task-list" id="todo-list">
-          <li class="list-group-item">
-            <span class="task-text">Tomar banho</span>
-            <div class="btn-group">
-              <button class="btn-complete">✓</button>
-              <button class="btn-delete">X</button>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <span class="task-text">Passar café
-            </span>
-            <div class="btn-group">
-              <button class="btn-complete">✓</button>
-              <button class="btn-delete">X</button>
-            </div>
-          </li>
         </ul>
-
-        <button class="btn-add-new mt-3">+ Adicionar nova tarefa</button>
+        <button class="btn-add-new mt-3" data-target-list="todo">+ Adicionar nova tarefa</button>
       </div>
     </div>
 
-    <!-- Box 2 -->
     <div class="col-12 col-md-4">
       <div class="card p-3 box">
         <h5 class="box-title">Fazendo</h5>
 
         <ul class="list-group list-group-flush task-list" id="inprogress-list">
-          <li class="list-group-item">
-            <span class="task-text">Analisar Bugs</span>
-            <div class="btn-group">
-              <button class="btn-complete">✓</button>
-              <button class="btn-delete">X</button>
-            </div>
-          </li>
         </ul>
 
-        <button class="btn-add-new mt-3">+ Adicionar nova tarefa</button>
+        <button class="btn-add-new mt-3" data-target-list="inprogress">+ Adicionar nova tarefa</button>
       </div>
     </div>
 
-    <!-- Box 3 -->
     <div class="col-12 col-md-4">
       <div class="card p-3 box">
         <h5 class="box-title">Concluído</h5>
 
         <ul class="list-group list-group-flush task-list" id="done-list">
-          <li class="list-group-item">
-            <span class="task-text">Limpar cozinha</span>
-            <div class="btn-group">
-              <button class="btn-complete" style="visibility:hidden">✓</button>
-              <button class="btn-delete">X</button>
-            </div>
-          </li>
         </ul>
-
-        <button class="btn-add-new mt-3">+ Adicionar nova tarefa</button>
+        <button class="btn-add-new mt-3" data-target-list="done">+ Adicionar nova tarefa</button>
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- Modal para Adicionar Tarefa -->
+<div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-custom text-black">
+        <h5 class="modal-title" id="taskModalLabel">Adicionar Nova Tarefa</h5>
+        <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="taskForm">
+          <div class="mb-3">
+            <label for="taskText" class="form-label">Nome da Tarefa</label>
+            <input type="text" class="form-control" id="taskText" placeholder="Digite o nome da tarefa..." required>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="taskDate" class="form-label">Data de Vencimento</label>
+              <input type="date" class="form-control" id="taskDate">
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <label for="taskTime" class="form-label">Horário</label>
+              <input type="time" class="form-control" id="taskTime">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-custom" id="saveTaskBtn">Salvar Tarefa</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -96,7 +97,7 @@
   <a href="#">Termos de Serviço</a>
   <a href="#">SAC</a>
   <p>Contato: (48) 9 9673-1277</p>
-  <p>&copy; 2025 Flash Cards. Todos os direitos reservados.</p>
+  <p>&copy; 2025 Taskly. Todos os direitos reservados.</p>
 </footer>
 
 <script src="../js/index.js"></script>

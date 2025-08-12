@@ -1,0 +1,90 @@
+:root {
+ --cor-principal: #e0d8c3;
+ --cor-secundaria: #f3eddf;
+ --fonte-padrao: 'Arial', sans-serif;
+ --espacamento-padrao: 1rem;
+ 
+}
+
+body {
+  background-color: var(--cor-principal);
+  color: #f0f0f0;           
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  padding: 20px;
+}
+
+form {
+  background-color: var(--cor-secundaria); /* caixa com fundo mais claro */
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+  width: 100%;
+  max-width: 400px;
+  margin: 5% auto;
+  gap: 50px;
+
+}
+
+header {
+  text-align: center;
+  color: #000000;
+}
+
+label {
+  font-weight: 600;
+  color: #2b2b2b;
+}
+
+input.form-control {
+  background-color: #ffffff;
+  border: none;
+  color: #000000;
+  padding: 10px 12px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input.form-control:focus {
+  background-color: #383838;
+  box-shadow: 0 0 8px #08580c;
+  outline: none;
+  color: #fff;
+}
+
+.btn-primary {
+  background-color: #08580c;
+  border: none;
+  width: 100%;
+  font-weight: 700;
+  padding: 12px 0;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  display: inline-block;
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #08580c;
+  text-decoration: none;
+  color: white;
+}
+.formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+
+}
+.teste {
+    color: #000000;
+    margin-top: 80px;
+    text-align: center;
+}

@@ -4,6 +4,7 @@ const inProgressList = document.getElementById('inprogress-list');
 const doneList = document.getElementById('done-list');
 
 let draggedItem = null;
+let currentTargetList = null;
 
 // Salva tarefas no localStorage
 function saveTasks() {
@@ -48,7 +49,6 @@ function loadTasks() {
         savedTasks.inprogress.forEach(task => inProgressList.appendChild(createTaskItem(task.text, task.date, task.time)));
         savedTasks.done.forEach(task => {
             const doneTask = createTaskItem(task.text, task.date, task.time);
-            doneTask.querySelector('.btn-complete').style.visibility = 'hidden';
             doneList.appendChild(doneTask);
         });
     }
@@ -100,7 +100,7 @@ function createTaskItem(text, date = '', time = '') {
     completeBtn.addEventListener('click', () => {
         doneList.appendChild(li);
         li.querySelector('.btn-complete').style.visibility = 'hidden';
-        saveTasks();
+        saveTasks();    
     });
 
     deleteBtn.addEventListener('click', () => {
@@ -168,6 +168,20 @@ function addDragAndDropEvents(taskItem) {
     taskItem.addEventListener('dragend', dragEnd);
 }
 
+// Função para obter a lista alvo baseado no data-target-list
+function getTargetList(targetListName) {
+    switch(targetListName) {
+        case 'todo':
+            return todoList;
+        case 'inprogress':
+            return inProgressList;
+        case 'done':
+            return doneList;
+        default:
+            return todoList;
+    }
+}
+
 // Inicializa tudo
 function init() {
     loadTasks();
@@ -196,22 +210,71 @@ function init() {
         });
     });
 
-    // Botões adicionar nova tarefa
+    // Configuração do modal
+    const taskModal = new bootstrap.Modal(document.getElementById('taskModal'));
+    const taskForm = document.getElementById('taskForm');
+    const taskTextInput = document.getElementById('taskText');
+    const taskDateInput = document.getElementById('taskDate');
+    const taskTimeInput = document.getElementById('taskTime');
+    const saveTaskBtn = document.getElementById('saveTaskBtn');
+
+    // Botões adicionar nova tarefa - agora com modal
     document.querySelectorAll('.btn-add-new').forEach(btn => {
         btn.addEventListener('click', () => {
-            const box = btn.closest('.box');
-            const ul = box.querySelector('.task-list');
-
-            const taskText = prompt('Digite o nome da nova tarefa:');
-            if (!taskText || !taskText.trim()) return;
-
-            const dueDate = prompt('Digite a data de vencimento (AAAA-MM-DD):');
-            const dueTime = prompt('Digite o horário de vencimento (HH:MM):');
-
-            const newTask = createTaskItem(taskText.trim(), dueDate, dueTime);
-            ul.appendChild(newTask);
-            saveTasks();
+            currentTargetList = btn.dataset.targetList;
+            
+            // Limpa o formulário
+            taskForm.reset();
+            
+            // Mostra o modal
+            taskModal.show();
+            
+            // Foca no input de texto
+            setTimeout(() => {
+                taskTextInput.focus();
+            }, 150);
         });
+    });
+
+    // Salvar tarefa do modal
+    saveTaskBtn.addEventListener('click', () => {
+        const taskText = taskTextInput.value.trim();
+        
+        if (!taskText) {
+            taskTextInput.focus();
+            return;
+        }
+
+        const dueDate = taskDateInput.value;
+        const dueTime = taskTimeInput.value;
+
+        const targetList = getTargetList(currentTargetList);
+        const newTask = createTaskItem(taskText, dueDate, dueTime);
+        
+        // Se for para a lista "done", esconde o botão de completar
+        if (currentTargetList === 'done') {
+            newTask.querySelector('.btn-complete').style.visibility = 'hidden';
+        }
+        
+        targetList.appendChild(newTask);
+        saveTasks();
+        
+        // Fecha o modal
+        taskModal.hide();
+    });
+
+    // Permite salvar com Enter no input de texto
+    taskTextInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            saveTaskBtn.click();
+        }
+    });
+
+    // Limpa o formulário quando o modal é fechado
+    document.getElementById('taskModal').addEventListener('hidden.bs.modal', () => {
+        taskForm.reset();
+        currentTargetList = null;
     });
 }
 
