@@ -49,7 +49,7 @@ input.form-control {
 }
 
 input.form-control:focus {
-  background-color: #383838;
+  background-color: #000000;
   box-shadow: 0 0 8px #08580c;
   outline: none;
   color: #fff;
@@ -88,3 +88,25 @@ input.form-control:focus {
     margin-top: 80px;
     text-align: center;
 }
+#cpf::placeholder {
+  color: #000000;
+  opacity: 1;
+}
+
+#cpf:focus::placeholder {
+  color: #ffffff;
+}
+.logo {
+ width: 30px;
+ position: absolute;
+ top: 20px;
+ left: 20px;
+}
+
+.login {
+ width: 30px;
+ position: absolute;
+ top: 20px;
+ right: 20px;
+}
+

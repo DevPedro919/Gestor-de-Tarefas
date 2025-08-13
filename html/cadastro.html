@@ -10,6 +10,9 @@
 </head>
 <body>
 <header>
+    <header class="cabecalho">
+  <h1 class="titulo">Bem-vindo ao Taskly</h1>
+</header>
     <h1>Bem vindo a pagina de cadastro</h1>
     <p>Por favor, preencha os campos abaixo para se cadastrar.</p>
 </header>
@@ -23,6 +26,10 @@
     <div class="mb-2">
         <label for="age" class="form-label">Idade</label>
         <input type="number" class="form-control" id="idade" required>
+    </div>
+        <div class="mb-3">
+        <label for="cpf" class="form-label">CPF</label>
+        <input type="text" class="form-control" id="cpf" required placeholder="XXX.XXX.XXX-XX">
     </div>
     <div class="mb-3">
         <label for="email" class="form-label">Email</label>
@@ -48,4 +55,5 @@
 
 
 </body>
+<script src="../js/cadastro.js"></script>
 </html>
