@@ -109,4 +109,9 @@ input.form-control:focus {
  top: 20px;
  right: 20px;
 }
-
+.botaoCadastrar {
+  background-color: #08580c;
+}
+.userData {
+  border-radius: 30%;
+}

@@ -16,7 +16,7 @@
     <img src="../img/img.png" class="logo" alt="Logo" />
   </a>
 
-  <a class="LALALALAL">
+  <a href="#" class="login-link">
     <img src="../img/img_login.png" class="login" alt="Login" />
   </a>
   <h1 class="titulo">Bem-vindo ao Taskly</h1>
@@ -94,6 +94,29 @@
   </div>
 </div>
 
+<!-- Modal para Perfil do Usuário -->
+<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-custom text-black">
+        <h5 class="modal-title" id="userModalLabel">Dados do Usuário</h5>
+        <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="userData">
+          <p><strong>Nome de Usuário:</strong> <span id="userUsername"></span></p>
+          <p><strong>Idade:</strong> <span id="userAge"></span></p>
+          <p><strong>CPF:</strong> <span id="userCPF"></span></p>
+          <p><strong>Email:</strong> <span id="userEmail"></span></p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer class="text-center mt-4">
   <a href="#">Sobre nós</a>
   <a href="#">Políticas de Privacidade</a>
@@ -108,19 +131,22 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const loginIcon = document.querySelector('LALALALAL');
+    const loginIcon = document.querySelector('.login-link');
+    const userModal = new bootstrap.Modal(document.getElementById('userModal'));
+    
     if (loginIcon) {
       loginIcon.addEventListener('click', function(e) {
         e.preventDefault(); // Impede o redirecionamento
         const userData = JSON.parse(localStorage.getItem('userData'));
         if (userData) {
-          // Exibe os dados em um alert (ou personalize como quiser)
-          alert(
-            `Usuário: ${userData.username}\n` +
-            `Idade: ${userData.idade}\n` +
-            `CPF: ${userData.cpf}\n` +
-            `Email: ${userData.email}`
-          );
+          // Preenche os dados no modal
+          document.getElementById('userUsername').textContent = userData.username;
+          document.getElementById('userAge').textContent = userData.idade;
+          document.getElementById('userCPF').textContent = userData.cpf;
+          document.getElementById('userEmail').textContent = userData.email;
+          
+          // Mostra o modal
+          userModal.show();
         } else {
           alert('Nenhum cadastro encontrado.');
         }
