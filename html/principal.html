@@ -15,8 +15,8 @@
   <a href="../html/principal.html" class="logo-link">
     <img src="../img/img.png" class="logo" alt="Logo" />
   </a>
-  
-  <a href="cadastro.html">
+
+  <a class="LALALALAL">
     <img src="../img/img_login.png" class="login" alt="Login" />
   </a>
   <h1 class="titulo">Bem-vindo ao Taskly</h1>
@@ -105,6 +105,29 @@
 
 <script src="../js/index.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const loginIcon = document.querySelector('LALALALAL');
+    if (loginIcon) {
+      loginIcon.addEventListener('click', function(e) {
+        e.preventDefault(); // Impede o redirecionamento
+        const userData = JSON.parse(localStorage.getItem('userData'));
+        if (userData) {
+          // Exibe os dados em um alert (ou personalize como quiser)
+          alert(
+            `Usuário: ${userData.username}\n` +
+            `Idade: ${userData.idade}\n` +
+            `CPF: ${userData.cpf}\n` +
+            `Email: ${userData.email}`
+          );
+        } else {
+          alert('Nenhum cadastro encontrado.');
+        }
+      });
+    }
+  });
+</script>
 
 </body>
 </html>
