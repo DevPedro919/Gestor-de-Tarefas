@@ -54,6 +54,41 @@ function loadTasks() {
     }
 }
 
+// Função para ordenar tarefas por data
+function sortTasksByDate(listElement) {
+    const items = Array.from(listElement.querySelectorAll('.list-group-item'));
+    
+    items.sort((a, b) => {
+        const dateA = a.dataset.dueDate || '9999-12-31'; // Sem data vai para o final
+        const dateB = b.dataset.dueDate || '9999-12-31';
+        
+        if (dateA === dateB) {
+            const timeA = a.dataset.dueTime || '23:59';
+            const timeB = b.dataset.dueTime || '23:59';
+            return timeA.localeCompare(timeB);
+        }
+        
+        return dateA.localeCompare(dateB);
+    });
+
+    // Remove todos os itens e adiciona na ordem correta com animação
+    items.forEach(item => item.remove());
+    
+    items.forEach((item, index) => {
+        setTimeout(() => {
+            item.classList.add('task-fade-in');
+            listElement.appendChild(item);
+            
+            // Remove a classe de animação após completar
+            setTimeout(() => {
+                item.classList.remove('task-fade-in');
+            }, 400);
+        }, index * 50); // Delay escalonado para efeito visual
+    });
+
+    saveTasks();
+}
+
 // Cria botão concluir
 function createCompleteBtn() {
     const btn = document.createElement('button');
@@ -68,6 +103,35 @@ function createDeleteBtn() {
     btn.className = 'btn-delete';
     btn.textContent = 'X';
     return btn;
+}
+
+// Função para completar tarefa com animação
+function completeTask(taskItem) {
+    // Adiciona animação de conclusão
+    taskItem.classList.add('task-completing');
+    
+    // Após a animação de conclusão, faz o fade out
+    setTimeout(() => {
+        taskItem.classList.remove('task-completing');
+        taskItem.classList.add('task-fade-out');
+        
+        // Após o fade out, move para a lista de concluídos
+        setTimeout(() => {
+            taskItem.classList.remove('task-fade-out');
+            taskItem.classList.add('task-fade-in');
+            
+            // Move para a lista de concluídos e esconde o botão de completar
+            doneList.appendChild(taskItem);
+            taskItem.querySelector('.btn-complete').style.visibility = 'hidden';
+            
+            // Remove a animação de fade in
+            setTimeout(() => {
+                taskItem.classList.remove('task-fade-in');
+            }, 400);
+            
+            saveTasks();
+        }, 400);
+    }, 600);
 }
 
 // Cria tarefa com texto, data, horário e botões + drag
@@ -97,15 +161,18 @@ function createTaskItem(text, date = '', time = '') {
     const completeBtn = createCompleteBtn();
     const deleteBtn = createDeleteBtn();
 
+    // Usa a nova função de completar com animação
     completeBtn.addEventListener('click', () => {
-        doneList.appendChild(li);
-        li.querySelector('.btn-complete').style.visibility = 'hidden';
-        saveTasks();    
+        completeTask(li);
     });
 
     deleteBtn.addEventListener('click', () => {
-        li.remove();
-        saveTasks();
+        // Animação de fade out antes de remover
+        li.classList.add('task-fade-out');
+        setTimeout(() => {
+            li.remove();
+            saveTasks();
+        }, 400);
     });
 
     btnGroup.appendChild(completeBtn);
@@ -210,6 +277,15 @@ function init() {
         });
     });
 
+    // Configuração dos botões de ordenação
+    document.getElementById('sort-todo').addEventListener('click', () => {
+        sortTasksByDate(todoList);
+    });
+
+    document.getElementById('sort-inprogress').addEventListener('click', () => {
+        sortTasksByDate(inProgressList);
+    });
+
     // Configuração do modal
     const taskModal = new bootstrap.Modal(document.getElementById('taskModal'));
     const taskForm = document.getElementById('taskForm');
@@ -250,6 +326,12 @@ function init() {
 
         const targetList = getTargetList(currentTargetList);
         const newTask = createTaskItem(taskText, dueDate, dueTime);
+        
+        // Animação de entrada para nova tarefa
+        newTask.classList.add('task-fade-in');
+        setTimeout(() => {
+            newTask.classList.remove('task-fade-in');
+        }, 400);
         
         // Se for para a lista "done", esconde o botão de completar
         if (currentTargetList === 'done') {

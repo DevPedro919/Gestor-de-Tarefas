@@ -1,6 +1,33 @@
 document.addEventListener('DOMContentLoaded', function() {
   const cpfInput = document.getElementById('cpf');
-  const form = document.querySelector('form');
+  const cadastroForm = document.getElementById('cadastro-form');
+  const loginForm = document.getElementById('login-form');
+  const switchToLogin = document.getElementById('switch-to-login');
+  const switchToCadastro = document.getElementById('switch-to-cadastro');
+  const pageTitle = document.getElementById('page-title');
+  const pageDescription = document.getElementById('page-description');
+
+  // Inicializa o modal de sucesso
+  const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+
+  // Alternar entre cadastro e login
+  switchToLogin.addEventListener('click', function(e) {
+    e.preventDefault();
+    cadastroForm.style.display = 'none';
+    loginForm.style.display = 'block';
+    pageTitle.textContent = 'Bem vindo a pagina de login';
+    pageDescription.textContent = 'Por favor, preencha os campos abaixo para fazer login.';
+  });
+
+  switchToCadastro.addEventListener('click', function(e) {
+    e.preventDefault();
+    loginForm.style.display = 'none';
+    cadastroForm.style.display = 'block';
+    pageTitle.textContent = 'Bem vindo a pagina de cadastro';
+    pageDescription.textContent = 'Por favor, preencha os campos abaixo para se cadastrar.';
+  });
+
+  // Formatação e validação do CPF
   if (cpfInput) {
     cpfInput.addEventListener('input', function(e) {
       let value = e.target.value.replace(/\D/g, '');
@@ -34,40 +61,142 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Impede o envio do formulário se o CPF for inválido
-if (form && cpfInput) {
-  form.addEventListener('submit', function(e) {
-    if (!validarCPF(cpfInput.value)) {
-      e.preventDefault();
-      let msg = document.getElementById('cpf-msg');
+  // Validação do email no login
+  const loginEmailInput = document.getElementById('login-email');
+  if (loginEmailInput) {
+    loginEmailInput.addEventListener('blur', function(e) {
+      const email = e.target.value.trim();
+      let msg = document.getElementById('login-email-msg');
+      
       if (!msg) {
         msg = document.createElement('div');
-        msg.id = 'cpf-msg';
+        msg.id = 'login-email-msg';
         msg.style.fontSize = '0.9em';
         msg.style.marginTop = '4px';
-        cpfInput.parentElement.appendChild(msg);
+        loginEmailInput.parentElement.appendChild(msg);
       }
-      msg.textContent = 'CPF inválido. Corrija antes de cadastrar.';
-      msg.style.color = 'red';
-      cpfInput.focus();
-      return;
-    }
 
-    // Salva os dados no localStorage
-    const userData = {
-      username: document.getElementById('username').value,
-      idade: document.getElementById('idade').value,
-      cpf: cpfInput.value,
-      email: document.getElementById('email').value,
-      password: document.getElementById('password').value
-    };
-    localStorage.setItem('userData', JSON.stringify(userData));
+      if (email.length > 0) {
+        if (email.includes('@')) {
+          msg.textContent = '';
+          msg.style.color = 'green';
+        } else {
+          msg.textContent = 'Email deve conter @';
+          msg.style.color = 'red';
+        }
+      } else {
+        msg.textContent = '';
+      }
+    });
+  }
 
-    // Redireciona para a página principal
-    e.preventDefault();
-    window.location.href = '../html/principal.html';
-  });
-}
+  // Formulário de cadastro
+  if (cadastroForm && cpfInput) {
+    cadastroForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Validação do CPF
+      if (!validarCPF(cpfInput.value)) {
+        let msg = document.getElementById('cpf-msg');
+        if (!msg) {
+          msg = document.createElement('div');
+          msg.id = 'cpf-msg';
+          msg.style.fontSize = '0.9em';
+          msg.style.marginTop = '4px';
+          cpfInput.parentElement.appendChild(msg);
+        }
+        msg.textContent = 'CPF inválido. Corrija antes de cadastrar.';
+        msg.style.color = 'red';
+        cpfInput.focus();
+        return;
+      }
+
+      // Validação de campos obrigatórios
+      const username = document.getElementById('username').value.trim();
+      const idade = document.getElementById('idade').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!username || !idade || !email || !password) {
+        alert('Por favor, preencha todos os campos obrigatórios.');
+        return;
+      }
+
+      // Salva os dados no localStorage
+      const userData = {
+        username: username,
+        idade: idade,
+        cpf: cpfInput.value,
+        email: email,
+        password: password
+      };
+      
+      try {
+        localStorage.setItem('userData', JSON.stringify(userData));
+        localStorage.setItem('isLoggedIn', 'true');
+        
+        // Exibe modal de sucesso
+        document.getElementById('successMessage').textContent = 'Cadastro realizado com sucesso!';
+        successModal.show();
+        
+        // Redireciona após 2 segundos
+        setTimeout(() => {
+          window.location.href = '../html/principal.html';
+        }, 2000);
+      } catch (error) {
+        alert('Erro ao salvar os dados. Tente novamente.');
+        console.error('Erro ao salvar no localStorage:', error);
+      }
+    });
+  }
+
+  // Formulário de login
+  if (loginForm) {
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value.trim();
+
+      // Validação de campos obrigatórios
+      if (!email || !password) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+      }
+
+      // Validação do email (deve conter @)
+      if (!email.includes('@')) {
+        let msg = document.getElementById('login-email-msg');
+        if (!msg) {
+          msg = document.createElement('div');
+          msg.id = 'login-email-msg';
+          msg.style.fontSize = '0.9em';
+          msg.style.marginTop = '4px';
+          loginEmailInput.parentElement.appendChild(msg);
+        }
+        msg.textContent = 'Email deve conter @';
+        msg.style.color = 'red';
+        loginEmailInput.focus();
+        return;
+      }
+
+      try {
+        localStorage.setItem('isLoggedIn', 'true');
+        
+        // Exibe modal de sucesso
+        document.getElementById('successMessage').textContent = 'Login realizado com sucesso!';
+        successModal.show();
+        
+        // Redireciona após 2 segundos
+        setTimeout(() => {
+          window.location.href = '../html/principal.html';
+        }, 2000);
+      } catch (error) {
+        alert('Erro ao fazer login. Tente novamente.');
+        console.error('Erro ao salvar no localStorage:', error);
+      }
+    });
+  }
 });
 
 // Função de validação de CPF (algoritmo da Receita)
@@ -90,4 +219,9 @@ function validarCPF(cpf) {
   if (resto !== parseInt(cpf.substring(10, 11))) return false;
 
   return true;
+}
+
+// Função para verificar CPF (mantida para compatibilidade)
+function verificarCPF() {
+  return false;
 }
