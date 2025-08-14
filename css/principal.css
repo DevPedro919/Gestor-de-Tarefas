@@ -177,7 +177,6 @@ margin: 0;
  background-color: rgba(60, 131, 89, 0.15);
 }
 
-/* Footer fixo na parte inferior */
 
 footer {
  background-color: var(--cor-secundaria);
@@ -194,3 +193,76 @@ footer a {
 footer a:hover {
  text-decoration: underline;
 }
+    /* Animação de conclusão de tarefa */
+    @keyframes taskComplete {
+      0% {
+        transform: scale(1);
+        background-color: white;
+      }
+      50% {
+        transform: scale(1.05);
+        background-color: #d4edda;
+        box-shadow: 0 0 20px rgba(40, 167, 69, 0.5);
+      }
+      100% {
+        transform: scale(1);
+        background-color: #d4edda;
+      }
+    }
+
+    .task-completing {
+      animation: taskComplete 0.6s ease-in-out;
+    }
+
+    /* Animação de fade out suave */
+    @keyframes fadeOutRight {
+      from {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+    }
+
+    .task-fade-out {
+      animation: fadeOutRight 0.4s ease-in-out forwards;
+    }
+
+    /* Animação de fade in para nova posição */
+    @keyframes fadeInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .task-fade-in {
+      animation: fadeInLeft 0.4s ease-in-out;
+    }
+
+    /* Estilo do botão de ordenação */
+    .btn-outline-secondary {
+      border-color: #6c757d;
+      color: #6c757d;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      font-size: 0.8em;
+    }
+
+    .btn-outline-secondary:hover {
+      background-color: #6c757d;
+      color: white;
+      transform: scale(1.1);
+      transition: all 0.2s ease;
+    }

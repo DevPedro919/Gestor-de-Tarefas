@@ -7,10 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const pageTitle = document.getElementById('page-title');
   const pageDescription = document.getElementById('page-description');
 
-  // Inicializa o modal de sucesso
   const successModal = new bootstrap.Modal(document.getElementById('successModal'));
 
-  // Alternar entre cadastro e login
   switchToLogin.addEventListener('click', function(e) {
     e.preventDefault();
     cadastroForm.style.display = 'none';
@@ -27,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
     pageDescription.textContent = 'Por favor, preencha os campos abaixo para se cadastrar.';
   });
 
-  // Formatação e validação do CPF
   if (cpfInput) {
     cpfInput.addEventListener('input', function(e) {
       let value = e.target.value.replace(/\D/g, '');
@@ -61,7 +58,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Validação do email no login
   const loginEmailInput = document.getElementById('login-email');
   if (loginEmailInput) {
     loginEmailInput.addEventListener('blur', function(e) {
@@ -90,12 +86,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Formulário de cadastro
   if (cadastroForm && cpfInput) {
     cadastroForm.addEventListener('submit', function(e) {
       e.preventDefault();
       
-      // Validação do CPF
       if (!validarCPF(cpfInput.value)) {
         let msg = document.getElementById('cpf-msg');
         if (!msg) {
@@ -111,7 +105,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
 
-      // Validação de campos obrigatórios
       const username = document.getElementById('username').value.trim();
       const idade = document.getElementById('idade').value.trim();
       const email = document.getElementById('email').value.trim();
@@ -122,7 +115,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
 
-      // Salva os dados no localStorage
       const userData = {
         username: username,
         idade: idade,
@@ -135,11 +127,10 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('userData', JSON.stringify(userData));
         localStorage.setItem('isLoggedIn', 'true');
         
-        // Exibe modal de sucesso
+    
         document.getElementById('successMessage').textContent = 'Cadastro realizado com sucesso!';
         successModal.show();
         
-        // Redireciona após 2 segundos
         setTimeout(() => {
           window.location.href = '../html/principal.html';
         }, 2000);
@@ -150,7 +141,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Formulário de login
   if (loginForm) {
     loginForm.addEventListener('submit', function(e) {
       e.preventDefault();
@@ -158,13 +148,11 @@ document.addEventListener('DOMContentLoaded', function() {
       const email = document.getElementById('login-email').value.trim();
       const password = document.getElementById('login-password').value.trim();
 
-      // Validação de campos obrigatórios
       if (!email || !password) {
         alert('Por favor, preencha todos os campos.');
         return;
       }
 
-      // Validação do email (deve conter @)
       if (!email.includes('@')) {
         let msg = document.getElementById('login-email-msg');
         if (!msg) {
@@ -183,11 +171,9 @@ document.addEventListener('DOMContentLoaded', function() {
       try {
         localStorage.setItem('isLoggedIn', 'true');
         
-        // Exibe modal de sucesso
         document.getElementById('successMessage').textContent = 'Login realizado com sucesso!';
         successModal.show();
-        
-        // Redireciona após 2 segundos
+
         setTimeout(() => {
           window.location.href = '../html/principal.html';
         }, 2000);
@@ -199,7 +185,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-// Função de validação de CPF (algoritmo da Receita)
 function validarCPF(cpf) {
   cpf = cpf.replace(/[^\d]+/g, '');
   if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
@@ -220,8 +205,6 @@ function validarCPF(cpf) {
 
   return true;
 }
-
-// Função para verificar CPF (mantida para compatibilidade)
 function verificarCPF() {
   return false;
 }

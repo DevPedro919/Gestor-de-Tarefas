@@ -1,4 +1,4 @@
-// Pega referências das listas
+
 const todoList = document.getElementById('todo-list');
 const inProgressList = document.getElementById('inprogress-list');
 const doneList = document.getElementById('done-list');
@@ -6,7 +6,7 @@ const doneList = document.getElementById('done-list');
 let draggedItem = null;
 let currentTargetList = null;
 
-// Salva tarefas no localStorage
+
 function saveTasks() {
     const tasks = {
         todo: [],
@@ -41,7 +41,6 @@ function saveTasks() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
-// Carrega tarefas do localStorage
 function loadTasks() {
     const savedTasks = JSON.parse(localStorage.getItem('tasks'));
     if (savedTasks) {
@@ -54,12 +53,11 @@ function loadTasks() {
     }
 }
 
-// Função para ordenar tarefas por data
 function sortTasksByDate(listElement) {
     const items = Array.from(listElement.querySelectorAll('.list-group-item'));
     
     items.sort((a, b) => {
-        const dateA = a.dataset.dueDate || '9999-12-31'; // Sem data vai para o final
+        const dateA = a.dataset.dueDate || '9999-12-31';
         const dateB = b.dataset.dueDate || '9999-12-31';
         
         if (dateA === dateB) {
@@ -71,7 +69,6 @@ function sortTasksByDate(listElement) {
         return dateA.localeCompare(dateB);
     });
 
-    // Remove todos os itens e adiciona na ordem correta com animação
     items.forEach(item => item.remove());
     
     items.forEach((item, index) => {
@@ -79,17 +76,15 @@ function sortTasksByDate(listElement) {
             item.classList.add('task-fade-in');
             listElement.appendChild(item);
             
-            // Remove a classe de animação após completar
             setTimeout(() => {
                 item.classList.remove('task-fade-in');
             }, 400);
-        }, index * 50); // Delay escalonado para efeito visual
+        }, index * 50); 
     });
 
     saveTasks();
 }
 
-// Cria botão concluir
 function createCompleteBtn() {
     const btn = document.createElement('button');
     btn.className = 'btn-complete';
@@ -97,7 +92,6 @@ function createCompleteBtn() {
     return btn;
 }
 
-// Cria botão excluir
 function createDeleteBtn() {
     const btn = document.createElement('button');
     btn.className = 'btn-delete';
@@ -105,26 +99,20 @@ function createDeleteBtn() {
     return btn;
 }
 
-// Função para completar tarefa com animação
 function completeTask(taskItem) {
-    // Adiciona animação de conclusão
     taskItem.classList.add('task-completing');
     
-    // Após a animação de conclusão, faz o fade out
     setTimeout(() => {
         taskItem.classList.remove('task-completing');
         taskItem.classList.add('task-fade-out');
-        
-        // Após o fade out, move para a lista de concluídos
+
         setTimeout(() => {
             taskItem.classList.remove('task-fade-out');
             taskItem.classList.add('task-fade-in');
             
-            // Move para a lista de concluídos e esconde o botão de completar
             doneList.appendChild(taskItem);
             taskItem.querySelector('.btn-complete').style.visibility = 'hidden';
             
-            // Remove a animação de fade in
             setTimeout(() => {
                 taskItem.classList.remove('task-fade-in');
             }, 400);
@@ -134,7 +122,6 @@ function completeTask(taskItem) {
     }, 600);
 }
 
-// Cria tarefa com texto, data, horário e botões + drag
 function createTaskItem(text, date = '', time = '') {
     const li = document.createElement('li');
     li.className = 'list-group-item';
@@ -161,13 +148,11 @@ function createTaskItem(text, date = '', time = '') {
     const completeBtn = createCompleteBtn();
     const deleteBtn = createDeleteBtn();
 
-    // Usa a nova função de completar com animação
     completeBtn.addEventListener('click', () => {
         completeTask(li);
     });
 
     deleteBtn.addEventListener('click', () => {
-        // Animação de fade out antes de remover
         li.classList.add('task-fade-out');
         setTimeout(() => {
             li.remove();
@@ -187,7 +172,6 @@ function createTaskItem(text, date = '', time = '') {
     return li;
 }
 
-// Drag and drop handlers
 function dragStart(e) {
     draggedItem = this;
     this.classList.add('dragging');
@@ -235,7 +219,6 @@ function addDragAndDropEvents(taskItem) {
     taskItem.addEventListener('dragend', dragEnd);
 }
 
-// Função para obter a lista alvo baseado no data-target-list
 function getTargetList(targetListName) {
     switch(targetListName) {
         case 'todo':
@@ -249,7 +232,6 @@ function getTargetList(targetListName) {
     }
 }
 
-// Inicializa tudo
 function init() {
     loadTasks();
 
@@ -259,7 +241,6 @@ function init() {
         list.addEventListener('dragover', dragOver);
         list.addEventListener('drop', e => e.preventDefault());
 
-        // Corrige tarefas pré-existentes para terem botões, data, horário e drag
         const oldTasks = Array.from(list.children);
         oldTasks.forEach(oldTask => {
             const text = oldTask.querySelector('.task-text')?.textContent || oldTask.textContent.trim();
@@ -277,7 +258,6 @@ function init() {
         });
     });
 
-    // Configuração dos botões de ordenação
     document.getElementById('sort-todo').addEventListener('click', () => {
         sortTasksByDate(todoList);
     });
@@ -286,7 +266,6 @@ function init() {
         sortTasksByDate(inProgressList);
     });
 
-    // Configuração do modal
     const taskModal = new bootstrap.Modal(document.getElementById('taskModal'));
     const taskForm = document.getElementById('taskForm');
     const taskTextInput = document.getElementById('taskText');
@@ -294,25 +273,20 @@ function init() {
     const taskTimeInput = document.getElementById('taskTime');
     const saveTaskBtn = document.getElementById('saveTaskBtn');
 
-    // Botões adicionar nova tarefa - agora com modal
     document.querySelectorAll('.btn-add-new').forEach(btn => {
         btn.addEventListener('click', () => {
             currentTargetList = btn.dataset.targetList;
             
-            // Limpa o formulário
             taskForm.reset();
             
-            // Mostra o modal
             taskModal.show();
             
-            // Foca no input de texto
             setTimeout(() => {
                 taskTextInput.focus();
             }, 150);
         });
     });
 
-    // Salvar tarefa do modal
     saveTaskBtn.addEventListener('click', () => {
         const taskText = taskTextInput.value.trim();
         
@@ -327,13 +301,11 @@ function init() {
         const targetList = getTargetList(currentTargetList);
         const newTask = createTaskItem(taskText, dueDate, dueTime);
         
-        // Animação de entrada para nova tarefa
         newTask.classList.add('task-fade-in');
         setTimeout(() => {
             newTask.classList.remove('task-fade-in');
         }, 400);
         
-        // Se for para a lista "done", esconde o botão de completar
         if (currentTargetList === 'done') {
             newTask.querySelector('.btn-complete').style.visibility = 'hidden';
         }
@@ -341,11 +313,9 @@ function init() {
         targetList.appendChild(newTask);
         saveTasks();
         
-        // Fecha o modal
         taskModal.hide();
     });
 
-    // Permite salvar com Enter no input de texto
     taskTextInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -353,11 +323,38 @@ function init() {
         }
     });
 
-    // Limpa o formulário quando o modal é fechado
     document.getElementById('taskModal').addEventListener('hidden.bs.modal', () => {
         taskForm.reset();
         currentTargetList = null;
     });
 }
+document.addEventListener('DOMContentLoaded', function() {
+    const loginIcon = document.querySelector('.login-link');
+    const userModal = new bootstrap.Modal(document.getElementById('userModal'));
+    
+    if (loginIcon) {
+      loginIcon.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        
+        if (isLoggedIn === 'true') {
+          const userData = JSON.parse(localStorage.getItem('userData'));
+          if (userData) {
+            document.getElementById('userUsername').textContent = userData.username;
+            document.getElementById('userAge').textContent = userData.idade;
+            document.getElementById('userCPF').textContent = userData.cpf;
+            document.getElementById('userEmail').textContent = userData.email;
+            
+            userModal.show();
+          } else {
+            alert('Dados do usuário não encontrados.');
+          }
+        } else {
+          window.location.href = '../html/cadastro.html';
+        }
+      });
+    }
+  });
 
 window.onload = init;
